@@ -11,7 +11,7 @@ module.exports.scrapper = async function () {
 };
 
 async function scrape() {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
   const page = await browser.newPage();
 
   await page.goto("https://banco.santander.cl/beneficios?segmento=s-personas");
