@@ -1,7 +1,16 @@
 const puppeteer = require("puppeteer");
 const generators = require("../../generators/format.js");
+const fileHandler = require("../../generators/files");
 
-module.exports.scrapperSantander = async function () {
+module.exports.scrapper = async function () {
+  const data = await fileHandler.loadOrScrape(
+    "scrappers/cl/santander/data.json",
+    scrape
+  );
+  return data;
+};
+
+async function scrape() {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
@@ -39,4 +48,4 @@ module.exports.scrapperSantander = async function () {
   }
 
   return result;
-};
+}
