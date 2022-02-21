@@ -34,8 +34,8 @@ bot.onText(/\/get (?<bank>\w+)(?<filter>.*)/, async (msg, match) => {
   // const resp = match[1]; // the captured "whatever"
   const messages = await responseMessage({ filters: parsedFilters });
 
-  for (const message of messages) {
-    const mssg =
+  for (let message of messages) {
+    message =
       message === ""
         ? `No data found for specified query \`\`\`/get ${msg.text}\`\`\``
         : message;
