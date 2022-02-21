@@ -10,7 +10,9 @@ const app = express();
 
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, { polling: true });
-const client = redis.createClient();
+const client = redis.createClient({
+  url: process.env.REDIS_URL ? process.env.REDIS_URL : "redis://localhost:6379",
+});
 
 async function responseMessage({ data = null, filters = [] }) {
   let response = data ? data : await scrapperSantander.scrapper(client);
@@ -49,10 +51,6 @@ bot.onText(/\/get (?<bank>\w+)(?<filter>.*)/, async (msg, match) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, async function () {
-  await client.connect({
-    url: process.env.REDIS_URL
-      ? process.env.REDIS_URL
-      : "redis://localhost:6379",
-  });
+  await client.connect();
   console.log(`Server is running at port ${PORT}`);
 });
