@@ -11,6 +11,16 @@ async function scrape() {
   const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
   const page = await browser.newPage();
 
+  // prevent loading of unnecessary elements to speed up html load
+  await page.setRequestInterception(true);
+  page.on("request", (request) => {
+    if (["image", "other"].includes(request.resourceType())) {
+      request.abort();
+    } else {
+      request.continue();
+    }
+  });
+
   await page.goto("https://banco.santander.cl/beneficios?segmento=s-personas");
 
   const data = await page.$$eval(".content-up", (nodes) => {
