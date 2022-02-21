@@ -2,11 +2,8 @@ const puppeteer = require("puppeteer");
 const generators = require("../../generators/format.js");
 const fileHandler = require("../../generators/files");
 
-module.exports.scrapper = async function () {
-  const data = await fileHandler.loadOrScrape(
-    "scrappers/cl/santander/data.json",
-    scrape
-  );
+module.exports.scrapper = async function (redisClient) {
+  const data = await fileHandler.loadOrScrape("santander", scrape, redisClient);
   return data;
 };
 
