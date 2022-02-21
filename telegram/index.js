@@ -14,8 +14,8 @@ const client = redis.createClient({
   url: process.env.REDIS_URL ? process.env.REDIS_URL : "redis://localhost:6379",
 });
 
-async function responseMessage({ data = null, filters = [] }) {
-  let response = data ? data : await scrapperSantander.scrapper(client);
+async function responseMessage({ filters = [] }) {
+  let response = await scrapperSantander.scrapper(client);
   responses = filterers.benefitsFilters(response, filters);
   const messages = formatter.benefitsFormatter(response);
   return messages;
@@ -32,10 +32,7 @@ bot.onText(/\/get (?<bank>\w+)(?<filter>.*)/, async (msg, match) => {
 
   // const chatId = msg.chat.id;
   // const resp = match[1]; // the captured "whatever"
-  const messages = await responseMessage({
-    // data: jsonData(),
-    filters: parsedFilters,
-  });
+  const messages = await responseMessage({ filters: parsedFilters });
 
   for (const message of messages) {
     const mssg =
@@ -51,6 +48,6 @@ bot.onText(/\/get (?<bank>\w+)(?<filter>.*)/, async (msg, match) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, async function () {
-  await client.connect();
+  client.connect();
   console.log(`Server is running at port ${PORT}`);
 });
