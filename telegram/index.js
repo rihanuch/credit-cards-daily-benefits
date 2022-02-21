@@ -39,7 +39,7 @@ bot.onText(/\/get (?<bank>\w+)(?<filter>.*)/, async (msg, match) => {
       message === ""
         ? `No data found for specified query \`\`\`/get ${msg.text}\`\`\``
         : message;
-    bot.sendMessage(process.env.TELEGRAM_CHANNEL, mssg, {
+    bot.sendMessage(msg.chat.id, message, {
       parse_mode: "Markdown",
     });
   }
