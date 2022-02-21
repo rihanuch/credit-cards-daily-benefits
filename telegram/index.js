@@ -4,6 +4,8 @@ const scrapperSantander = require("../scrappers/cl/santander/index");
 const formatter = require("../scrappers/generators/text");
 const filterers = require("../scrappers/generators/filters");
 const TelegramBot = require("node-telegram-bot-api");
+const express = require("express");
+const app = express();
 
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, { polling: true });
@@ -32,8 +34,15 @@ bot.onText(/\/get (?<bank>\w+)(?<filter>.*)/, async (msg, match) => {
   });
 
   for (const message of messages) {
-    bot.sendMessage(process.env.TELEGRAM_CHANNEL, message, {
+    const mssg = message === "" ? "empty" : message;
+    bot.sendMessage(process.env.TELEGRAM_CHANNEL, mssg, {
       parse_mode: "Markdown",
     });
   }
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, function () {
+  console.log(`Server is running at port ${PORT}`);
 });

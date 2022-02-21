@@ -18,6 +18,7 @@
   "homepage": "https://github.com/rihanuch/credit-cards-daily-benefits#readme",
   "dependencies": {
     "dotenv": "^16.0.0",
+    "express": "^4.17.3",
     "node-telegram-bot-api": "^0.56.0",
     "puppeteer": "^13.3.2"
   },
