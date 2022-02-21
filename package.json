@@ -1,0 +1,27 @@
+{
+  "name": "credit-cards-daily-benefits",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rihanuch/credit-cards-daily-benefits.git"
+  },
+  "author": "Rodrigo Hanuch",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rihanuch/credit-cards-daily-benefits/issues"
+  },
+  "homepage": "https://github.com/rihanuch/credit-cards-daily-benefits#readme",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "node-telegram-bot-api": "^0.56.0",
+    "puppeteer": "^13.3.2"
+  },
+  "engines": {
+    "node": "17.4.0"
+  }
+}
