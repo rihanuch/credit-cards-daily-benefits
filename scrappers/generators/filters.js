@@ -10,7 +10,7 @@ module.exports.benefitsFilters = function (benefits, filters = []) {
   // we remove all the non specified benefits type
   benefits.forEach((company) => {
     // if no specification is given, then we return all the benefits
-    if (filters === []) {
+    if (filters.length === 0) {
       return;
     }
 
