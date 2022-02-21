@@ -36,7 +36,10 @@ bot.onText(/\/get (?<bank>\w+)(?<filter>.*)/, async (msg, match) => {
   });
 
   for (const message of messages) {
-    const mssg = message === "" ? "empty" : message;
+    const mssg =
+      message === ""
+        ? `No data found for specified query \`\`\`/get ${msg.text}\`\`\``
+        : message;
     bot.sendMessage(process.env.TELEGRAM_CHANNEL, mssg, {
       parse_mode: "Markdown",
     });
