@@ -4,15 +4,9 @@ const scrapperSantander = require("../scrappers/cl/santander/index");
 const formatter = require("../scrappers/generators/text");
 const filterers = require("../scrappers/generators/filters");
 const TelegramBot = require("node-telegram-bot-api");
-const express = require("express");
-const redis = require("redis");
-const app = express();
 
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, { polling: true });
-const client = redis.createClient({
-  url: process.env.REDIS_URL ? process.env.REDIS_URL : "redis://localhost:6379",
-});
 
 async function responseMessage({ filters = [] }) {
   let response = await scrapperSantander.scrapper(client);
@@ -20,6 +14,39 @@ async function responseMessage({ filters = [] }) {
   const messages = formatter.benefitsFormatter(response);
   return messages;
 }
+
+bot.onText(/\/get/, async (msg, match) => {
+  const opts = {
+    reply_markup: {
+      inline_keyboard: [
+        [
+          {
+            text: "Santander",
+            callback_data: "santander",
+          },
+          // {
+          //   text: "Banco de Chile",
+          //   callback_data: "bancoDeChile",
+          // },
+        ],
+      ],
+    },
+  };
+  bot.sendMessage(msg.from.id, "Select a bank", opts);
+});
+
+// Handle callback queries
+bot.on("callback_query", function onCallbackQuery(callbackQuery) {
+  const action = callbackQuery.data;
+  const msg = callbackQuery.message;
+  const opts = {
+    chat_id: msg.chat.id,
+    message_id: msg.message_id,
+  };
+  let text;
+
+  console.log(callbackQuery);
+});
 
 // Matches "/echo [whatever]"
 bot.onText(/\/get (?<bank>\w+)(?<filter>.*)/, async (msg, match) => {
@@ -45,9 +72,4 @@ bot.onText(/\/get (?<bank>\w+)(?<filter>.*)/, async (msg, match) => {
   }
 });
 
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, async function () {
-  client.connect();
-  console.log(`Server is running at port ${PORT}`);
-});
+module.exports.telegramBot = bot;
